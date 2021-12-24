@@ -15,16 +15,16 @@ See [here](https://blog.christophetd.fr/cloud-security-breaches-and-vulnerabilit
 Code within the repo allows you to 
 - list all of the working profiles from `~/.aws/credentials`, including those based on session tokens
 - optionally protect yourself from AWS keys usage by simply whitelistening only current IP address for
-  API calls. This does come with few caveats:
+  API calls. This, however, does come with a few caveats:
   
-  - credentials need to allow `iam:PutUserPolicy` on the user credentials itself. Optionally, you can provide
+  - This works only if credentials allow `iam:PutUserPolicy` on the user    credentials itself. Optionally, you can provide
     admin credentials to perform this operation using `--admin-profile` option
   
   - in order not to lock yourself out when changing IPs, [iam:PutUserPolicy] is left out of the protection, however
     it does have UserAgent string protection that would prevent it's usage by any process that are unaware of this
     script/method existance. 
   
-  - everytime client IP address is changed, script needs be executed again to align the policy with the new IP        address 
+  - everytime client IP address is changed, script needs be executed again to align the policy with the new IP           address, consider scheduling 'update' command per examples below
 
 ## Requirements
 
