@@ -36,10 +36,15 @@ If you are using AWS CLI, chances are good that these are already present on the
 
 Simply, clone the repo and run the scripts
 
-1 - clone the repo
+1 - build and install package
 
 ```
-git clone https://github.com:toshke/aws-keys-security.git
+git clone https://github.com:toshke/aws-keys-sectool.git && \
+  cd aws-keys-sectool && \
+  python3 setup.py install 
+
+### or simply install from PyPi
+pip3 install aws-keys-sectool
 ```
 
 ### Key listing
