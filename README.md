@@ -51,18 +51,25 @@ pip3 install aws-keys-sectool
 
 ```
 ### default behaviour prints results in human readable format to stdout
-python3 list_keys.py
+aws-keys-sectool list-all-keys
 
 ### optionally to write output to json file use (aws_keys_report.json)
-python3 list_keys.py machine-readable
+aws-keys-sectool list-all-keys --machine-readable
 ```
 
 ### Key protection
 
 ```shell 
-### default behaviour will leave a backdoor access for PutUserPolicy 
-python3 protect_keys.py 
-
-### which can be short-circuited with additional option
-python3 protect_keys.py no-ua-backdoor
+### 
+### Options explained
+###   --no-ua-backdoor : IP protection applies to PutUserPolicy action as well. 
+###                      Use this only with --admin-profile option, otherwise
+###                      You may lock yourself out of the account if your IP has changed
+###
+###   --admin-profile  : Admin profile to apply restrictive IAM policy to user. By default
+###                      iam:PutUserPolicy will be executed using same profile
+###                      
+###   --profile        : Targeted AWS profile. Default behaviour will apply restrictive IP 
+###                      policy for ALL the profiles
+aws-keys-sectool protect-keys [--no-ua-backdoor] [--profile <target_profile>] [--admin-profile <admin_profile>]
 ```
