@@ -36,7 +36,7 @@ DENY_NOT_UA_POLICY  = {
             }
         }
 
-def main():
+def protect_keys():
     no_ua_backdoor = len(sys.argv) > 1 and sys.argv[1] == "no-ua-backdoor"
     data = get_accessibility_data(False)
     accessible_profiles = [profile for profile in data if data[profile].get('accessible',False)]
@@ -73,4 +73,4 @@ def main():
         )
 
 if __name__ == '__main__':
-    main()
+    protect_keys()

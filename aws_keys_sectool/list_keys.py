@@ -6,7 +6,7 @@ import json
 from .common import get_accessibility_data
 
 
-def main():
+def list_keys():
     machine_readable = len(sys.argv) > 1 and sys.argv[1] == "machine-readable"
     data = get_accessibility_data(not machine_readable)
     accessible_profiles = [profile for profile in data if data[profile].get('accessible',False)]
@@ -25,4 +25,4 @@ def main():
         print('\n'.join(accessible_profiles))
     
 if __name__ == '__main__':
-    main()
+    list_keys()
