@@ -20,18 +20,18 @@ Code within the repo allows you to
 - optionally protect yourself from AWS keys usage by simply whitelistening only current IP address for
   API calls. This, however, does come with a few caveats:
   
-  - This works only if credentials allow `iam:PutUserPolicy` on the user    credentials itself. Optionally, you can provide
-    admin credentials to perform this operation using `--admin-profile` option
+  - This works only if credentials allow `iam:PutUserPolicy` on the user    credentials itself. 
+
+  - in order not to lock yourself out when changing IPs, [iam:PutUserPolicy] is    left out of the full protection when using `-b` option, however
+    it is conditioned using `aws:UserAgent` condition and expecting hash of the 
+    user's arn for it's value. So, in credential leak scenario user is still protected if malicous actor is not aware the keys are protected using this utility
   
-  - in order not to lock yourself out when changing IPs, [iam:PutUserPolicy] is left out of the protection, however
-    it does have UserAgent string protection that would prevent it's usage by any process that are unaware of this
-    script/method existance. 
-  
-  - everytime client IP address is changed, script needs be executed again to align the policy with the new IP           address, consider scheduling 'update' command per examples below
+  - everytime client IP address is changed, script needs to be executed again to align the policy with the new IP address. 
 
 ## Requirements
 
-`python3` and it's `boto3` 
+- `python3` 
+- `boto3` 
 
 If you are using AWS CLI, chances are good that these are already present on the system. 
 
@@ -46,9 +46,8 @@ git clone https://github.com:toshke/aws-keys-sectool.git && \
   cd aws-keys-sectool && \
   python3 setup.py install 
 
-### or simply install from PyPi
+### or install from PyPi
 pip3 install aws-keys-sectool
-
 aws-keys-sectool -h
 ```
 
