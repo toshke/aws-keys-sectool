@@ -78,3 +78,26 @@ aws-keys-sectool list-all-keys -j
 ###
 aws-keys-sectool protect-keys  [-b] [-p PROFILE]
 ```
+
+## FAQ
+
+*Q*: Can I do it manually? 
+*A*: Yes, see policy below for policy without backdoor access
+```
+{
+    "Sid": "DenyIpBased",
+    "Effect": "Deny",
+    "NotAction": "iam:PutUserPolicy",
+    "Resource": "*",
+    "Condition": {
+        "NotIpAddress": {
+            "aws:SourceIp": <YOUR_IP_GOES_HERE>
+        }
+    }
+}
+```
+-----
+*Q*: What if I use backdoor option and my creds are leaked
+*A*: Obviously backdoor implies there is vulnerability by design. 
+Ideal scenario is avoid using backdoor option, and an admin profile
+to update ip when changed. 
