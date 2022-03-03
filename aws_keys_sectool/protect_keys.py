@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 import sys
 import json
 import hashlib
@@ -36,13 +34,30 @@ DENY_NOT_UA_POLICY  = {
             }
         }
 
-def protect_keys():
-    no_ua_backdoor = len(sys.argv) > 1 and sys.argv[1] == "no-ua-backdoor"
+def protect_keys(options):
+    
     data = get_accessibility_data(False)
     accessible_profiles = [profile for profile in data if data[profile].get('accessible',False)]
     response = urllib.request.urlopen("http://ipinfo.io").read()
     ip = json.loads(response)['ip']
+
+    if options.target_profile != "" and options.target_profile not in accessible_profiles:
+        print(f'Profile {options.target_profile} not available or accessible')
+        return
+
+    if options.target_profile == "":
+        print(f'IP based protection ({ip}) will be applied to all of the following active profiles:\n')
+        print('\n'.join(accessible_profiles))
+        answer = input(f'\nProceed? (y/n)')
+        if not answer.lower().strip() == 'y':
+            print(f'Aborting...')
+            sys.exit(0)
+    
     for profile in accessible_profiles:
+        # if single profile targeted
+        if options.target_profile != "" and options.target_profile != profile:
+            continue
+        
         arn = data[profile]['identity']
         if ':user' not in arn:
             print(f'Not applying protection for non-user identity {arn}')
@@ -53,7 +68,7 @@ def protect_keys():
             "Statement": [ copy.copy(DENY_NOT_IP_POLICY), copy.copy(DENY_NOT_UA_POLICY) ]
         }
         policy['Statement'][0]['Condition']['NotIpAddress']['aws:SourceIp'] = ip
-        if no_ua_backdoor:
+        if not options.enable_backdoor:
             del policy['Statement'][1]
             del policy['Statement'][0]['NotAction']
             policy['Statement'][0]['Action'] = '*'
@@ -65,12 +80,13 @@ def protect_keys():
         ))
         print(f'Processing profile {profile}: {arn}')
         user = arn.split('/')[1]
-        print(f'Set IP based protection ({ip}) on user {user}')
+        print(f'🔒 Set IP based protection ({ip}) on user {user}')
+        if options.enable_backdoor:
+            print(f'Backdoor 🚪 access enabled, you can use this utility from differenty IP to protect again\n')
+        else:
+            print(f'No backdoor 🚪 access. User policy will only accept API calls from {ip}\n')
         iam.put_user_policy(
                 UserName=user, 
                 PolicyName='IpBasedProtection',
                 PolicyDocument=json.dumps(policy)
         )
-
-if __name__ == '__main__':
-    protect_keys()

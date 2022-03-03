@@ -1,5 +1,6 @@
 import os
 import boto3
+import sys
 
 from botocore.exceptions import ClientError
 
@@ -12,6 +13,10 @@ def get_accessibility_data(print_output):
     Return dict with all local aws profiles present and their identity/accessibility information
     """
     fname = os.environ['HOME'] + '/.aws/credentials'
+    if not os.path.isfile(fname):
+        print(f'{fname} does not exist, can\'t proceed')
+        sys.exit(1)
+    
     with open(fname, 'r') as f:
         content = f.read()
 
@@ -41,11 +46,11 @@ def get_accessibility_data(print_output):
             try:
                 arn = client.get_caller_identity()['Arn']
                 if print_output: 
-                    print(f'.. accessible: {arn}')
+                    print(f'✅ identity: {arn}\n')
                 data[profile]['accessible'] = True
                 data[profile]['identity'] = arn
             except ClientError as e:
                 data[profile]['accessible'] = False
                 if print_output: 
-                    print('.. failed ')
+                    print('❌ failed\n')
     return data

@@ -4,6 +4,9 @@ Command line to list and protective working AWS credentials
 on workstations and servers (use IAM roles for any compute, though!)
 
 
+❌  **IF YOUR IP IS NOT STATIC AND YOU DON'T USE -b OPTION YOU CAN EASILY LOCK 
+YOURSELF OUT** 
+
 ## Why? 
 
 AWS long lived static credentials is still number 1 initial access vector
@@ -45,6 +48,8 @@ git clone https://github.com:toshke/aws-keys-sectool.git && \
 
 ### or simply install from PyPi
 pip3 install aws-keys-sectool
+
+aws-keys-sectool -h
 ```
 
 ### Key listing
@@ -54,7 +59,7 @@ pip3 install aws-keys-sectool
 aws-keys-sectool list-all-keys
 
 ### optionally to write output to json file use (aws_keys_report.json)
-aws-keys-sectool list-all-keys --machine-readable
+aws-keys-sectool list-all-keys -j
 ```
 
 ### Key protection
@@ -62,14 +67,15 @@ aws-keys-sectool list-all-keys --machine-readable
 ```shell 
 ### 
 ### Options explained
-###   --no-ua-backdoor : IP protection applies to PutUserPolicy action as well. 
-###                      Use this only with --admin-profile option, otherwise
-###                      You may lock yourself out of the account if your IP has changed
-###
-###   --admin-profile  : Admin profile to apply restrictive IAM policy to user. By default
-###                      iam:PutUserPolicy will be executed using same profile
+###   -b Add backdoor access. User will only be able to perform 
+###        iam:PutUserPolicy action from different IP address, and
+###        with UA string set to hash of user ARN. Not added 
+###        by default, assuming that user is on a static IP
+###        and there is admin account that can restore user's access in 
+###        case of different IP
 ###                      
-###   --profile        : Targeted AWS profile. Default behaviour will apply restrictive IP 
-###                      policy for ALL the profiles
-aws-keys-sectool protect-keys [--no-ua-backdoor] [--profile <target_profile>] [--admin-profile <admin_profile>]
+###   --profile PROFILE : Target specific AWS profile. All profiles 
+###        are protected by default with a user prompt
+###
+aws-keys-sectool protect-keys  [-b] [-p PROFILE]
 ```
