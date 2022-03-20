@@ -1,9 +1,10 @@
 
+import sys
 from optparse import OptionParser
+
 from .list_keys import list_keys
 from .protect_keys import protect_keys
 
-import sys
 
 parser = OptionParser('aws-key-sectool (list-keys|protect-keys) ')
 parser.add_option("-p", "--profile", dest="target_profile", default="",
@@ -24,7 +25,12 @@ help='''Creates aws_keys_report.json file as an output.
 Applies only to list-keys action''')
 
 
+parser.add_option("-i","--ip", dest="target_ip", default="",
+help='''Specify whitelist block address in CIDR or IP format. e.g. 127.0.0.1[/32]''')
+
 def main():
+    """Main entrypoint"""
+
     (options, args) = parser.parse_args()
     if len(args) < 1:
         parser.print_usage()

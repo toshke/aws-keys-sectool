@@ -76,7 +76,11 @@ aws-keys-sectool list-all-keys -j
 ###   --profile PROFILE : Target specific AWS profile. All profiles 
 ###        are protected by default with a user prompt
 ###
-aws-keys-sectool protect-keys  [-b] [-p PROFILE]
+###   --ip IP_ADDRESS: If you're whitelisting IP address (or range using CIDR format)
+###         other than your current public IP, use this option. 
+###         Default value is your current IP address obtained via ipinfo.io  
+###
+aws-keys-sectool protect-keys  [-b] [-p PROFILE] [-i] ip_address_or_cidr
 ```
 
 ## FAQ
