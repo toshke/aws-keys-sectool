@@ -1,4 +1,5 @@
-
+clean:
+	rm -rf build dist
 package:
 	python3 setup.py bdist_wheel 
 
