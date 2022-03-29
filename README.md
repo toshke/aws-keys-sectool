@@ -9,14 +9,16 @@ YOURSELF OUT**
 
 ## Why? 
 
-AWS long lived static credentials is still number 1 initial access vector
-for 2021 security breaches, according to many security researches. 
+AWS long lived static credentials were still number 1 initial access vector
+in 2021 security breaches, according to many security researches. 
 See [here](https://blog.christophetd.fr/cloud-security-breaches-and-vulnerabilities-2021-in-review/#Static_Credentials_Remain_the_Major_Initial_Access_Vector)
 
 ## What
 
-Code within the repo allows you to 
+`aws-keys-sectool`  allows you to 
+
 - list all of the working profiles from `~/.aws/credentials`, including those based on session tokens
+
 - optionally protect yourself from AWS keys usage by simply whitelistening only current IP address for
   API calls. This, however, does come with a few caveats:
   
@@ -44,12 +46,15 @@ Simply, clone the repo and run the scripts
 1 - build and install package
 
 ```
+### install from PyPi
+pip3 install aws-keys-sectool
+
+## or clone and build
 git clone https://github.com:toshke/aws-keys-sectool.git && \
   cd aws-keys-sectool && \
   python3 setup.py install 
 
-### or install from PyPi
-pip3 install aws-keys-sectool
+## see usage
 aws-keys-sectool -h
 ```
 
@@ -87,7 +92,7 @@ aws-keys-sectool protect-keys  [-b] [-p PROFILE] [-i] ip_address_or_cidr
 
 ## FAQ
 
-*Q*: Can I do it manually? 
+*Q*: Can I whitelist IPs/CIDRs manually, outside of the tool?
 
 *A*: Yes, see policy below for policy without backdoor access
 ```
