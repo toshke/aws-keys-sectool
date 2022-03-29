@@ -1,6 +1,6 @@
 # aws-keys-security
 
-Command line to list and protective working AWS credentials
+Command line to list and protect working AWS credentials
 on workstations and servers (use IAM roles for any compute, though!)
 
 
