@@ -28,6 +28,8 @@ Code within the repo allows you to
   
   - everytime client IP address is changed, script needs to be executed again to align the policy with the new IP address. 
 
+[See it in action on asciinema](https://asciinema.org/a/481461)
+
 ## Requirements
 
 - `python3` 
