@@ -1,4 +1,7 @@
-# aws-keys-security
+# aws-keys-sectool
+
+
+[See it in action on asciinema](https://asciinema.org/a/481461)
 
 Command line to list and protect working AWS credentials
 on workstations and servers (use IAM roles for any compute, though!)
@@ -30,7 +33,6 @@ See [here](https://blog.christophetd.fr/cloud-security-breaches-and-vulnerabilit
   
   - everytime client IP address is changed, script needs to be executed again to align the policy with the new IP address. 
 
-[See it in action on asciinema](https://asciinema.org/a/481461)
 
 ## Requirements
 
